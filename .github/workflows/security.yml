@@ -33,27 +33,18 @@ jobs:
           with:
             name: snyk-sca.sarif
             path: snyk.sarif
-
-    snyk-iac:
+    
+    trufflehog:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v3
-        - name: Build a Docker image
-          run: docker build -t your/image-to-test .
-        - name: Run Snyk to check Docker image for vulnerabilities
-          # Snyk can be used to break the build when it detects vulnerabilities.
-          # In this case we want to upload the issues to GitHub Code Scanning
-          continue-on-error: true
-          uses: snyk/actions/iac@master
-          env:            # In order to use the Snyk Action you will need to have a Snyk API token.
-            # See https://docs.snyk.io/integrations/ci-cd-integrations/github-actions-integration#getting-your-snyk-token
-            # or you can sign up for free at https://snyk.io/login
-            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-        - name: save report as pipeline artifact
-          uses: github/codeql-action/upload-sarif@v2
+        - name: Checkout code
+          uses: actions/checkout@v4
           with:
-            sarif_file: snyk.sarif
+            fetch-depth: 0
+        - name: Secret Scanning
+          uses: trufflesecurity/trufflehog@main
+          with:
+            extra_args: --only-verified
 
     semgrep-full:
         runs-on: ubuntu-latest
