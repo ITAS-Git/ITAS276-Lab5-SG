@@ -39,13 +39,6 @@ jobs:
             with:
                 name: snyk.sarif
                 path: snyk.sarif
-            
-        # step 4
-        - 
-            name: Download report
-            uses: actions/download-artifact@v2
-            with: 
-                name: snyk.sarif
 
     semgrep-full:
         runs-on: ubuntu-latest
