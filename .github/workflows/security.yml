@@ -11,7 +11,7 @@ jobs:
     snyk:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
         - name: Build a Docker image
           run: docker build -t your/image-to-test .
         - name: Run Snyk to check Docker image for vulnerabilities
@@ -27,10 +27,25 @@ jobs:
           with:
             image: seanglencrossitas/itas276-lab4:latest
             args: --file=Dockerfile
-        - name: Upload result to GitHub Code Scanning
-          uses: github/codeql-action/upload-sarif@v2
-          with:
-            sarif_file: snyk.sarif
+        #- name: Upload result to GitHub Code Scanning
+        #  uses: github/codeql-action/upload-sarif@v2
+        #  with:
+        #    sarif_file: snyk.sarif
+        # step 3
+            
+        - 
+            name: save report as pipeline artifact
+            uses: actions/upload-artifact@v3
+            with:
+                name: snyk.sarif
+                path: snyk.sarif
+            
+        # step 4
+        - 
+            name: Download report
+            uses: actions/download-artifact@v2
+            with: 
+                name: snyk.sarif
 
     semgrep-full:
         runs-on: ubuntu-latest
