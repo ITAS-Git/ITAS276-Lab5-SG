@@ -23,7 +23,9 @@ jobs:
             # In order to use the Snyk Action you will need to have a Snyk API token.
             # See https://docs.snyk.io/integrations/ci-cd-integrations/github-actions-integration#getting-your-snyk-token
             # or you can sign up for free at https://snyk.io/login
-            #SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+            
+        
+            
             SNYK_TOKEN: "0984e728-ca34-43fd-ab55-97f62a800b64"
           with:
             image: seanglencrossitas/itas276-lab4:latest
@@ -67,9 +69,9 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v4
           with:
-            fetch-depth: 1
+            fetch-depth: 0
         - name: Secret Scanning
           uses: trufflesecurity/trufflehog@main
-          #with:
-          #  extra_args: --only-verified
+          with:
+            extra_args: --only-verified
     
