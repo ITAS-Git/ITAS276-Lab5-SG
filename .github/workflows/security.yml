@@ -1,5 +1,5 @@
 # To scan for security issues
-name: Docker Image CI
+name: Lab5 DevSecOps standard security pipeline
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-    snyk-sca:
+    SCA-Snyk:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v3
@@ -34,7 +34,32 @@ jobs:
           with:
             name: snyk-sca.sarif
             path: snyk.sarif
+
+    SAST-Semgrep:
+        runs-on: ubuntu-latest
+        container:
+            image: returntocorp/semgrep
+
+        steps:   
+            # Checkout source for scanning
+            - name: clone application source code
+              uses: actions/checkout@v3
+
+            # Run semgrep default SAST and generate sarif report
+            - name: full semgrep scan
+              run: semgrep \
+                    --sarif --output semgrep-sast.sarif \
+                    --metrics=off \
+                    --config="p/default"
     
+            # Upload report
+            - name: save report as pipeline artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: semgrep-sast.sarif
+                path: semgrep-sast.sarif
+    
+    # Scan for code secrets using trufflehog
     trufflehog:
         runs-on: ubuntu-latest
         steps:
@@ -46,33 +71,4 @@ jobs:
           uses: trufflesecurity/trufflehog@main
           with:
             extra_args: --only-verified
-
-    semgrep-full:
-        runs-on: ubuntu-latest
-        container:
-            image: returntocorp/semgrep
-
-        steps:   
-            # step 1
-            - 
-                name: clone application source code
-                uses: actions/checkout@v3
-
-            # step 2
-            - 
-                name: full semgrep scan
-                run: |
-                    semgrep \
-                    --sarif --output report.sarif \
-                    --metrics=off \
-                    --config="p/default"
-    
-            # step 3
-            
-            - 
-                name: save report as pipeline artifact
-                uses: actions/upload-artifact@v3
-                with:
-                    name: semgrep.sarif
-                    path: report.sarif
     
