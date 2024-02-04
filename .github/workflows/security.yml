@@ -10,6 +10,7 @@ on:
 jobs:
     SCA-Snyk:
         runs-on: ubuntu-latest
+        needs: [trufflehog]
         steps:
         - uses: actions/checkout@v3
         - name: Build a Docker image
@@ -38,6 +39,7 @@ jobs:
 
     SAST-Semgrep:
         runs-on: ubuntu-latest
+        needs: [trufflehog]
         container:
             image: returntocorp/semgrep
 
