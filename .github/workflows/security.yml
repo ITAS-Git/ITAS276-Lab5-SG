@@ -48,7 +48,7 @@ jobs:
             # Run semgrep default SAST and generate sarif report
             - name: full semgrep scan
               run: semgrep \
-                    --sarif --output semgrep-sast.sarif \
+                    --sarif --output semgrep_sast.sarif \
                     --metrics=off \
                     --config="p/default"
     
@@ -57,7 +57,7 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                 name: semgrep-sast.sarif
-                path: semgrep-sast.sarif
+                path: semgrep_sast.sarif
     
     # Scan for code secrets using trufflehog
     trufflehog:
