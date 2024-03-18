@@ -1,4 +1,4 @@
-# To scan for security issues
+# To scan for security issues ITAS Lab 5
 name: Lab5 DevSecOps standard security pipeline
 
 on:
