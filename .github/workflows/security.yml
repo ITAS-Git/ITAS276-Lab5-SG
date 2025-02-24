@@ -30,7 +30,7 @@ jobs:
             args: --file=Dockerfile
 
         - name: save report as pipeline artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
             name: snyk-sca.sarif
             path: snyk.sarif
@@ -56,7 +56,7 @@ jobs:
     
             # Upload report
             - name: save report as pipeline artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: semgrep-sast.sarif
                 path: semgrep-sast.sarif
